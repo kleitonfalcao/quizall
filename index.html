@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>QuizAll 🚀 — Bandeiras, Logomarcas e Escudos</title>
+  <meta name="description" content="O melhor jogo de perguntas visual do Brasil! Adivinhe bandeiras, logomarcas e escudos de futebol em 3 níveis de dificuldade!">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="app-container">
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- 1. MENU PRINCIPAL (QuizAll) -->
+    <div class="screen screen-active" id="screen-main-menu">
+      <div class="menu-header">
+        <div class="main-logo">⚡</div>
+        <h1 class="main-title">QuizAll</h1>
+        <p class="main-subtitle">Bandeiras · Logos · Escudos de Futebol</p>
+      </div>
+
+      <div class="player-name-box">
+        <label for="player-name-input">Seu Nome / Apelido:</label>
+        <input type="text" id="player-name-input" placeholder="Digite seu nome..." maxlength="15">
+      </div>
+
+      <!-- Seleção de Modo de Jogo -->
+      <div class="mode-select-box">
+        <span class="mode-label">Escolha o assunto:</span>
+        <div class="mode-grid">
+          <button class="mode-btn mode-active" data-mode="flags">🚩 Bandeiras</button>
+          <button class="mode-btn" data-mode="logos">🏢 Logomarcas</button>
+          <button class="mode-btn" data-mode="crests">⚽ Escudos</button>
+          <button class="mode-btn" data-mode="mixed">🔀 Misturado</button>
+        </div>
+      </div>
+
+      <!-- Seleção de Nível de Dificuldade -->
+      <div class="mode-select-box">
+        <span class="mode-label">Nível de Dificuldade:</span>
+        <div class="mode-grid three-cols">
+          <button class="diff-btn" data-diff="easy">🟢 Fácil</button>
+          <button class="diff-btn diff-active" data-diff="medium">🟡 Médio</button>
+          <button class="diff-btn" data-diff="hard">🔴 Difícil</button>
+        </div>
+      </div>
+
+      <div class="high-score-banner">
+        <span>🏆 Recorde Pessoal</span>
+        <strong id="menu-highscore-val">0</strong>
+      </div>
+
+      <div class="menu-actions">
+        <button class="primary-btn pulse-anim" id="btn-start-game">▶️ Jogar Agora</button>
+        <button class="secondary-btn" id="btn-open-ranking">🏆 Ranking / Placar</button>
+        <button class="secondary-btn" id="btn-open-missions">🎯 Missões & Conquistas</button>
+        <button class="secondary-btn" id="btn-open-settings">⚙️ Configurações</button>
+      </div>
+    </div>
+
+    <!-- 2. TELA DO JOGO -->
+    <div class="screen" id="screen-game">
+      <header class="top-bar">
+        <button class="icon-btn" id="btn-pause" title="Pausar" aria-label="Pausar">⏸️</button>
+
+        <div class="score-badge">
+          <span class="label">Pontos</span>
+          <span class="val" id="score-val">0</span>
+        </div>
+
+        <div class="timer-container" aria-label="Tempo restante">
+          <svg class="timer-svg" viewBox="0 0 48 48">
+            <circle class="timer-circle-bg" cx="24" cy="24" r="20"></circle>
+            <circle class="timer-circle-progress" id="timer-circle" cx="24" cy="24" r="20"></circle>
+          </svg>
+          <span class="timer-text" id="timer-text">15</span>
+        </div>
+
+        <div class="lives-container" id="lives-container" title="Vidas (Erros restantes)">
+          ❤️❤️❤️❤️❤️
+        </div>
+
+        <button class="icon-btn" id="btn-mute" title="Som" aria-label="Som">🔊</button>
+      </header>
+
+      <div class="streak-bar" id="streak-text">🔥 Sequência: 0</div>
+
+      <main class="flag-card">
+        <img id="flag-img" class="flag-img" src="" alt="Imagem do Desafio" referrerpolicy="no-referrer">
+      </main>
+
+      <section class="options-grid">
+        <button class="option-btn" id="opt-0">Opção 1</button>
+        <button class="option-btn" id="opt-1">Opção 2</button>
+        <button class="option-btn" id="opt-2">Opção 3</button>
+        <button class="option-btn" id="opt-3">Opção 4</button>
+      </section>
+
+      <footer class="lifelines-bar">
+        <button class="lifeline-btn" id="btn-5050" title="Elimina 2 opções">
+          <span>🌓</span> 50:50
+        </button>
+        <button class="lifeline-btn" id="btn-hint" title="Dica sobre a imagem">
+          <span>💡</span> Dica
+        </button>
+        <button class="lifeline-btn" id="btn-skip" title="Pula para o próximo (-1 Vida)">
+          <span>⏭️</span> Pular (-1❤️)
+        </button>
+      </footer>
+    </div>
+
+    <!-- Modais -->
+    <div class="modal-overlay" id="feedback-overlay">
+      <div class="modal-box">
+        <h2 class="modal-title" id="feedback-title">🎉 Resposta Certa!</h2>
+        <p class="modal-text" id="feedback-text">Você acertou em cheio!</p>
+        <button class="primary-btn" id="btn-next">Próximo Desafio 🚀</button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="hint-modal">
+      <div class="modal-box">
+        <h2 class="modal-title">💡 Dica do Papai Explorer</h2>
+        <p class="modal-text" id="hint-modal-text">Dica sobre o item...</p>
+        <button class="primary-btn" id="btn-close-hint">Entendi! 👍</button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="pause-modal">
+      <div class="modal-box">
+        <h2 class="modal-title">⏸️ Jogo Pausado</h2>
+        <div class="modal-actions">
+          <button class="primary-btn" id="btn-resume-game">▶️ Continuar Jogo</button>
+          <button class="secondary-btn" id="btn-pause-settings">⚙️ Configurações</button>
+          <button class="danger-btn" id="btn-quit-to-menu">🏠 Voltar ao Menu Principal</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="ranking-modal">
+      <div class="modal-box">
+        <h2 class="modal-title">🏆 Top Ranking QuizAll</h2>
+        <div class="ranking-list" id="ranking-container"></div>
+        <button class="primary-btn" id="btn-close-ranking" style="margin-top: 16px;">Fechar</button>
+      </div>
+    </div>
+
+    <!-- 5. MODAL DE CONFIGURAÇÕES AVANÇADAS -->
+    <div class="modal-overlay" id="settings-modal">
+      <div class="modal-box">
+        <h2 class="modal-title">⚙️ Configurações</h2>
+        
+        <div class="settings-list">
+          <div class="setting-group">
+            <span class="setting-label">🎨 Tema Visual:</span>
+            <div class="btn-group">
+              <button class="secondary-btn" data-theme-btn="dark-blue">🌙 Azul</button>
+              <button class="secondary-btn" data-theme-btn="light">☀️ Claro</button>
+              <button class="secondary-btn" data-theme-btn="neon">⚡ Neon</button>
+            </div>
+          </div>
+
+          <!-- Nível de Dificuldade nas Configurações -->
+          <div class="setting-group">
+            <span class="setting-label">⚡ Dificuldade do Jogo:</span>
+            <div class="btn-group">
+              <button class="secondary-btn" data-diff-btn="easy">🟢 Fácil</button>
+              <button class="secondary-btn" data-diff-btn="medium">🟡 Médio</button>
+              <button class="secondary-btn" data-diff-btn="hard">🔴 Difícil</button>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <span class="setting-label">🔊 Áudio & Sons:</span>
+            <div class="btn-group">
+              <button class="secondary-btn" id="btn-toggle-sound">🔊 Som: ON</button>
+              <button class="secondary-btn" id="btn-toggle-suspense">🎵 Suspense: ON</button>
+            </div>
+          </div>
+
+          <div class="setting-group" style="margin-top: 10px;">
+            <button class="danger-btn" id="btn-reset-data">🧹 Resetar Recordes e Ranking</button>
+          </div>
+        </div>
+
+        <button class="primary-btn" id="btn-close-settings" style="margin-top: 16px;">Salvar & Fechar</button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="missions-modal">
+      <div class="modal-box">
+        <h2 class="modal-title">🎯 Missões & Conquistas</h2>
+        <div class="missions-list" id="missions-container"></div>
+        <button class="primary-btn" id="btn-close-missions" style="margin-top: 20px;">Fechar</button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="gameover-modal">
+      <div class="modal-box">
+        <div class="main-logo">💔</div>
+        <h2 class="modal-title" style="color: var(--error-color);">Você Perdeu!</h2>
+        <p class="modal-text" id="gameover-stats">Você cometeu 5 erros.</p>
+        <div class="modal-actions">
+          <button class="primary-btn" id="btn-restart-game">🔄 Tentar Novamente</button>
+          <button class="secondary-btn" id="btn-gameover-to-menu">🏠 Menu Principal</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import { UIController } from './js/ui-controller.js';
+    window.addEventListener('DOMContentLoaded', () => {
+      new UIController();
+    });
+  </script>
+</body>
+</html>
