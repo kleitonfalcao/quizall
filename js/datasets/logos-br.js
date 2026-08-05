@@ -1,0 +1,27 @@
+// js/datasets/logos-br.js - Principais Logomarcas do Brasil (Expansão Completa)
+export const LOGOS_BR = [
+  { code: 'nubank', name: 'Nubank', category: 'Finanças', domain: 'nubank.com.br', hint: 'Famoso banco digital brasileiro com cartão roxinho.' },
+  { code: 'itau', name: 'Itaú', category: 'Finanças', domain: 'itau.com.br', hint: 'Um dos maiores bancos privados do Brasil, azul com i amarelo.' },
+  { code: 'bradesco', name: 'Bradesco', category: 'Finanças', domain: 'bradesco.com.br', hint: 'Grande banco brasileiro com a cor vermelha marcante.' },
+  { code: 'petrobras', name: 'Petrobras', category: 'Energia', domain: 'petrobras.com.br', hint: 'Empresa estatal brasileira de petróleo, verde e amarela.' },
+  { code: 'havaianas', name: 'Havaianas', category: 'Moda', domain: 'havaianas.com.br', hint: 'Famosos chinelos de borracha do Brasil.' },
+  { code: 'ambev', name: 'Ambev', category: 'Bebidas', domain: 'ambev.com.br', hint: 'Maior cervejaria da América Latina.' },
+  { code: 'banco-do-brasil', name: 'Banco do Brasil', category: 'Finanças', domain: 'bb.com.br', hint: 'O banco mais antigo do país, amarelo e azul.' },
+  { code: 'caixa', name: 'Caixa Econômica Federal', category: 'Finanças', domain: 'caixa.gov.br', hint: 'Banco público responsável pela Loteria Federal e FGTS.' },
+  { code: 'magazine-luiza', name: 'Magazine Luiza (Magalu)', category: 'Varejo', domain: 'magazineluiza.com.br', hint: 'Gigante do varejo brasileiro da Lu.' },
+  { code: 'americanas', name: 'Lojas Americanas', category: 'Varejo', domain: 'americanas.com.br', hint: 'Rede de varejo vermelha com o simbolo A.' },
+  { code: 'natura', name: 'Natura', category: 'Cosméticos', domain: 'natura.com.br', hint: 'Famosa marca brasileira de cosméticos e perfumes.' },
+  { code: 'boticario', name: 'O Boticário', category: 'Cosméticos', domain: 'boticario.com.br', hint: 'Rede de perfumaria e cosméticos de Curitiba.' },
+  { code: 'globo', name: 'TV Globo', category: 'Mídia', domain: 'globo.com', hint: 'A maior emissora de televisão do Brasil.' },
+  { code: 'sbt', name: 'SBT', category: 'Mídia', domain: 'sbt.com.br', hint: 'Sistema Brasileiro de Televisão fundado por Silvio Santos.' },
+  { code: 'seara', name: 'Seara', category: 'Alimentos', domain: 'seara.com.br', hint: 'Marca de carnes e congelados famosa no Brasil.' },
+  { code: 'sadia', name: 'Sadia', category: 'Alimentos', domain: 'sadia.com.br', hint: 'Marca de alimentos famosa pelo mascote LekTrek.' },
+  { code: 'perdigao', name: 'Perdigão', category: 'Alimentos', domain: 'perdigao.com.br', hint: 'Marca de alimentos com o casal de perdigões.' },
+  { code: 'guarana-antarctica', name: 'Guaraná Antarctica', category: 'Bebidas', domain: 'guaranaantarctica.com.br', hint: 'Refrigerante sabor guaraná da Amazônia.' },
+  { code: 'ifood', name: 'iFood', category: 'Tecnologia', domain: 'ifood.com.br', hint: 'O aplicativo de delivery de comida mais famoso do Brasil.' },
+  { code: '99', name: '99 (Taxi / Pop)', category: 'Tecnologia', domain: '99app.com', hint: 'Aplicativo amarelo de transporte por carro e táxi.' },
+  { code: 'azul-linhas-aereas', name: 'Azul Linhas Aéreas', category: 'Transporte', domain: 'voeazul.com.br', hint: 'Companhia aérea brasileira com o mapa do Brasil no logo.' },
+  { code: 'gol-linhas-aereas', name: 'GOL Linhas Aéreas', category: 'Transporte', domain: 'voegol.com.br', hint: 'Companhia aérea brasileira com a cor laranja marcante.' },
+  { code: 'tramontina', name: 'Tramontina', category: 'Casa', domain: 'tramontina.com.br', hint: 'Famosa marca brasileira de panelas, talheres e churrasco.' },
+  { code: 'bauducco', name: 'Bauducco', category: 'Alimentos', domain: 'bauducco.com.br', hint: 'Famosa marca brasileira de panetones, biscoitos e torradas.' }
+];
