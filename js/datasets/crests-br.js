@@ -1,6 +1,6 @@
-// js/datasets/crests-br.js - Escudos dos Principais Clubes do Brasil (Séries A, B e C)
+// js/datasets/crests-br.js - Escudos dos Principais Clubes do Brasil (Séries A, B, C e Regiões)
 export const CRESTS_BR = [
-  // Série A & Gigantes
+  // Série A & Gigantes Tradicionais
   { code: 'flamengo', name: 'Flamengo', region: 'Brasil (RJ)', domain: 'flamengo.com.br', hint: 'Clube rubro-negro do Rio de Janeiro com a maior torcida do Brasil.' },
   { code: 'palmeiras', name: 'Palmeiras', region: 'Brasil (SP)', domain: 'palmeiras.com.br', hint: 'Verdão de São Paulo, campeão de várias Libertadores.' },
   { code: 'corinthians', name: 'Corinthians', region: 'Brasil (SP)', domain: 'corinthians.com.br', hint: 'Timão de São Paulo com âncora, remos e escudo com iniciais.' },
@@ -24,12 +24,32 @@ export const CRESTS_BR = [
   { code: 'red-bull-bragantino', name: 'Red Bull Bragantino', region: 'Brasil (SP)', domain: 'redbullbragantino.com.br', hint: 'Massa Bruta de Bragança Paulista.' },
   { code: 'cuiaba', name: 'Cuiabá EC', region: 'Brasil (MT)', domain: 'cuiabaesporteclube.com.br', hint: 'Dourado do Mato Grosso.' },
   { code: 'goias', name: 'Goiás EC', region: 'Brasil (GO)', domain: 'goiasec.com.br', hint: 'Esmeraldino de Goiânia com a letra G.' },
+  { code: 'atletico-go', name: 'Atlético Goianiense', region: 'Brasil (GO)', domain: 'atleticogoianiense.com.br', hint: 'Dragão de Goiânia rubro-negro.' },
   { code: 'criciuma', name: 'Criciúma EC', region: 'Brasil (SC)', domain: 'criciuma.com.br', hint: 'Tigre de Santa Catarina amarela, preta e branca.' },
   { code: 'chapecoense', name: 'Chapecoense', region: 'Brasil (SC)', domain: 'chapecoense.com', hint: 'Verdão do Oeste de Santa Catarina.' },
+  { code: 'avaí', name: 'Avaí FC', region: 'Brasil (SC)', domain: 'avai.com.br', hint: 'Leão da Ilha de Florianópolis azul e branco.' },
+  { code: 'figueirense', name: 'Figueirense FC', region: 'Brasil (SC)', domain: 'figueirense.com.br', hint: 'Furacão do Estreito com a figueira no escudo.' },
   { code: 'guarani', name: 'Guarani FC', region: 'Brasil (SP)', domain: 'guaranifc.com.br', hint: 'Bugre de Campinas, campeão brasileiro de 1978.' },
   { code: 'ponte-preta', name: 'AA Ponte Preta', region: 'Brasil (SP)', domain: 'pontepreta.com.br', hint: 'Macaca de Campinas com a faixa diagonal preta.' },
+  { code: 'novorizontino', name: 'Gremio Novorizontino', region: 'Brasil (SP)', domain: 'novorizontino.com.br', hint: 'Tigre do Vale de Novo Horizonte.' },
+  { code: 'mirassol', name: 'Mirassol FC', region: 'Brasil (SP)', domain: 'mirassolfc.com.br', hint: 'Leão da Araraquarense amarelo e verde.' },
+  { code: 'ituano', name: 'Ituano FC', region: 'Brasil (SP)', domain: 'ituanofc.com.br', hint: 'Galo de Itu rubro-negro.' },
+  { code: 'botafogo-sp', name: 'Botafogo-SP', region: 'Brasil (SP)', domain: 'botafogofutebolsa.com.br', hint: 'Pantera de Ribeirão Preto.' },
+  { code: 'vila-nova', name: 'Vila Nova FC', region: 'Brasil (GO)', domain: 'vilanovafc.com.br', hint: 'Tigre de Goiânia de cor vermelha.' },
+  { code: 'operario-pr', name: 'Operário Ferroviário', region: 'Brasil (PR)', domain: 'operarioferroviario.com.br', hint: 'Fantasma de Ponta Grossa alvinegro.' },
   { code: 'paysandu', name: 'Paysandu SC', region: 'Brasil (PA)', domain: 'paysandu.com.br', hint: 'Papão da Curuzu de Belém do Pará.' },
   { code: 'clube-do-remo', name: 'Clube do Remo', region: 'Brasil (PA)', domain: 'clubedoremo.com.br', hint: 'Leão Azul de Belém do Pará.' },
   { code: 'nautico', name: 'Náutico', region: 'Brasil (PE)', domain: 'nautico-pe.com.br', hint: 'Timbu dos Aflitos de Recife em Pernambuco.' },
-  { code: 'santa-cruz', name: 'Santa Cruz FC', region: 'Brasil (PE)', domain: 'santacruzfc.com.br', hint: 'Cobra Coral do Arruda em Recife.' }
+  { code: 'santa-cruz', name: 'Santa Cruz FC', region: 'Brasil (PE)', domain: 'santacruzfc.com.br', hint: 'Cobra Coral do Arruda em Recife.' },
+  { code: 'sampaio-correa', name: 'Sampaio Corrêa', region: 'Brasil (MA)', domain: 'sampaiocorrea.com.br', hint: 'Bolívia Querida de São Luís do Maranhão.' },
+  { code: 'abc-fc', name: 'ABC Futebol Clube', region: 'Brasil (RN)', domain: 'abcfc.com.br', hint: 'Mais Querido de Natal no Rio Grande do Norte.' },
+  { code: 'america-rn', name: 'América de Natal', region: 'Brasil (RN)', domain: 'americadenatal.com.br', hint: 'Mecão de Natal de cor vermelha.' },
+  { code: 'botafogo-pb', name: 'Botafogo-PB', region: 'Brasil (PB)', domain: 'botafogopb.com.br', hint: 'Belo de João Pessoa na Paraíba.' },
+  { code: 'csa', name: 'CSA', region: 'Brasil (AL)', domain: 'csaoficial.com.br', hint: 'Azulão de Maceió em Alagoas.' },
+  { code: 'crb', name: 'CRB', region: 'Brasil (AL)', domain: 'crboficial.com.br', hint: 'Galo da Pajuçara de Maceió.' },
+  { code: 'brasil-de-pelotas', name: 'Brasil de Pelotas', region: 'Brasil (RS)', domain: 'gebrasil.com.br', hint: 'Xavante de Pelotas no Rio Grande do Sul.' },
+  { code: 'caxias', name: 'SER Caxias', region: 'Brasil (RS)', domain: 'sercaxias.com.br', hint: 'Falecão grená de Caxias do Sul.' },
+  { code: 'londrina', name: 'Londrina EC', region: 'Brasil (PR)', domain: 'londrinaesporteclube.com.br', hint: 'Tubarão do Paraná azul e branco.' },
+  { code: 'volta-redonda', name: 'Volta Redonda FC', region: 'Brasil (RJ)', domain: 'voltaredondafc.com.br', hint: 'Esquadrão de Aço do Sul Fluminense.' },
+  { code: 'america-mg', name: 'América Mineiro', region: 'Brasil (MG)', domain: 'americamineiro.com.br', hint: 'Coelho de Belo Horizonte verde e preto.' }
 ];
