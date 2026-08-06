@@ -1,4 +1,4 @@
-/* styles.css - QuizAll (Design System, Dificuldades, Temas & Mobile First) */
+/* styles.css - QuizAll (Design System, Imagens HD Cristalinas & Mobile First) */
 :root, [data-theme="dark-blue"] {
   --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
   --card-bg: rgba(30, 27, 75, 0.65);
@@ -58,10 +58,11 @@ body {
 }
 
 #app-container {
-  width: 100%; max-width: 440px; background: var(--card-bg); backdrop-filter: blur(20px);
+  width: 100%; max-width: 480px; background: var(--card-bg); backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px); border: 1.5px solid var(--card-border);
-  border-radius: var(--radius-lg); box-shadow: var(--shadow-glow); padding: 18px 16px;
-  display: flex; flex-direction: column; gap: 12px; position: relative; min-height: 600px;
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-glow); padding: 16px 14px;
+  display: flex; flex-direction: column; gap: 12px; position: relative; min-height: 580px;
+  margin: 0 auto;
 }
 
 .screen { display: none; flex-direction: column; gap: 12px; width: 100%; height: 100%; }
@@ -150,11 +151,34 @@ body {
 
 .streak-bar { text-align: center; font-size: 12px; font-weight: 700; color: var(--primary-color); background: var(--input-bg); padding: 4px 12px; border-radius: 20px; align-self: center; border: 1px solid var(--card-border); }
 
+/* Card com suporte a Nitidez de Imagem HD otimizado para celular */
 .flag-card {
-  background: rgba(0, 0, 0, 0.25); border-radius: var(--radius-md); padding: 12px;
-  display: flex; justify-content: center; align-items: center; border: 1px solid var(--card-border); min-height: 145px;
+  background: rgba(255, 255, 255, 0.96); border-radius: var(--radius-md); padding: 14px;
+  display: flex; justify-content: center; align-items: center; border: 1.5px solid var(--card-border);
+  height: 220px; width: 100%; box-shadow: inset 0 0 20px rgba(0,0,0,0.05); overflow: hidden;
 }
-.flag-img { width: 100%; max-width: 210px; height: 120px; object-fit: contain; border-radius: var(--radius-sm); filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); }
+.flag-img {
+  width: 80%; height: 80%; max-width: 100%; max-height: 180px;
+  object-fit: contain; border-radius: var(--radius-sm);
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.15));
+  image-rendering: -webkit-optimize-contrast; image-rendering: high-quality;
+  transition: transform 0.2s ease;
+}
+
+.text-question-box {
+  text-align: center; color: #0f172a; padding: 10px; width: 100%;
+}
+.text-question-title {
+  font-size: 14px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
+}
+.text-question-target {
+  font-size: 24px; font-weight: 800; color: #1e1b4b; line-height: 1.2;
+}
+
+.dedication-footer {
+  text-align: center; font-size: 11px; font-weight: 700; color: var(--primary-color);
+  padding: 6px 0 2px 0; border-top: 1px dashed var(--card-border); opacity: 0.9;
+}
 
 .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .option-btn {

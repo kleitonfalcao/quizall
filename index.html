@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>QuizAll 🚀 — Bandeiras, Logomarcas e Escudos</title>
-  <meta name="description" content="O melhor jogo de perguntas visual do Brasil! Adivinhe bandeiras, logomarcas e escudos de futebol em 3 níveis de dificuldade!">
+  <meta name="description"
+    content="O melhor jogo de perguntas visual do Brasil! Adivinhe bandeiras, logomarcas e escudos de futebol em 3 níveis de dificuldade!">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
-  
+
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
   <div id="app-container">
@@ -22,7 +25,7 @@
       <div class="menu-header">
         <div class="main-logo">⚡</div>
         <h1 class="main-title">QuizAll</h1>
-        <p class="main-subtitle">Bandeiras · Logos · Escudos de Futebol</p>
+        <p class="main-subtitle">Bandeiras · Logos · Escudos de Futebol · e muito mais</p>
       </div>
 
       <div class="player-name-box">
@@ -37,7 +40,8 @@
           <button class="mode-btn mode-active" data-mode="flags">🚩 Bandeiras</button>
           <button class="mode-btn" data-mode="logos">🏢 Logomarcas</button>
           <button class="mode-btn" data-mode="crests">⚽ Escudos</button>
-          <button class="mode-btn" data-mode="mixed">🔀 Misturado</button>
+          <button class="mode-btn" data-mode="capitals">🏛️ Capitais</button>
+          <button class="mode-btn" data-mode="mixed" style="grid-column: span 2;">🔀 Misturado</button>
         </div>
       </div>
 
@@ -62,6 +66,10 @@
         <button class="secondary-btn" id="btn-open-missions">🎯 Missões & Conquistas</button>
         <button class="secondary-btn" id="btn-open-settings">⚙️ Configurações</button>
       </div>
+
+      <footer class="dedication-footer">
+        <p>❤️ Jogo criado para Yuri Lassala Falcão</p>
+      </footer>
     </div>
 
     <!-- 2. TELA DO JOGO -->
@@ -91,15 +99,21 @@
 
       <div class="streak-bar" id="streak-text">🔥 Sequência: 0</div>
 
-      <main class="flag-card">
+      <main class="flag-card" id="question-card">
         <img id="flag-img" class="flag-img" src="" alt="Imagem do Desafio" referrerpolicy="no-referrer">
+        <div id="text-question-box" class="text-question-box" style="display: none;">
+          <h2 id="text-question-title" class="text-question-title">Qual é a capital de...</h2>
+          <p id="text-question-target" class="text-question-target">Brasil</p>
+        </div>
       </main>
 
-      <section class="options-grid">
+      <section class="options-grid" id="options-grid">
         <button class="option-btn" id="opt-0">Opção 1</button>
         <button class="option-btn" id="opt-1">Opção 2</button>
         <button class="option-btn" id="opt-2">Opção 3</button>
         <button class="option-btn" id="opt-3">Opção 4</button>
+        <button class="option-btn" id="opt-4" style="display: none;">Opção 5</button>
+        <button class="option-btn" id="opt-5" style="display: none;">Opção 6</button>
       </section>
 
       <footer class="lifelines-bar">
@@ -155,7 +169,7 @@
     <div class="modal-overlay" id="settings-modal">
       <div class="modal-box">
         <h2 class="modal-title">⚙️ Configurações</h2>
-        
+
         <div class="settings-list">
           <div class="setting-group">
             <span class="setting-label">🎨 Tema Visual:</span>
@@ -222,4 +236,5 @@
     });
   </script>
 </body>
+
 </html>
