@@ -28,11 +28,17 @@ export class UIController {
       timerText: document.getElementById('timer-text'),
       timerCircle: document.getElementById('timer-circle'),
       flagImg: document.getElementById('flag-img'),
+      textQuestionBox: document.getElementById('text-question-box'),
+      textQuestionTitle: document.getElementById('text-question-title'),
+      textQuestionTarget: document.getElementById('text-question-target'),
+      optionsGrid: document.getElementById('options-grid'),
       options: [
         document.getElementById('opt-0'),
         document.getElementById('opt-1'),
         document.getElementById('opt-2'),
-        document.getElementById('opt-3')
+        document.getElementById('opt-3'),
+        document.getElementById('opt-4'),
+        document.getElementById('opt-5')
       ],
       btnPause: document.getElementById('btn-pause'),
       btnMute: document.getElementById('btn-mute'),
@@ -102,6 +108,10 @@ export class UIController {
   initEvents() {
     // Busca dinâmica em cadeia se a imagem falhar num servidor
     this.dom.flagImg.onerror = () => {
+      if (this.game.gameMode === 'capitals' || (this.game.currentQuestion && this.game.currentQuestion.capital)) {
+        this.dom.flagImg.style.display = 'none';
+        return;
+      }
       this.sourceIndex++;
       if (this.currentSources && this.sourceIndex < this.currentSources.length) {
         this.dom.flagImg.src = this.currentSources[this.sourceIndex];
@@ -142,6 +152,7 @@ export class UIController {
         this.dom.modeBtns.forEach(b => b.classList.remove('mode-active'));
         btn.classList.add('mode-active');
         this.game.setGameMode(btn.dataset.mode);
+        this.dom.menuHighScore.textContent = this.game.loadHighScoreForMode();
       });
     });
 
@@ -211,7 +222,7 @@ export class UIController {
     audioEngine.stopSuspense();
     this.dom.screenGame.classList.remove('screen-active');
     this.dom.screenMenu.classList.add('screen-active');
-    this.dom.menuHighScore.textContent = this.game.highScore;
+    this.dom.menuHighScore.textContent = this.game.loadHighScoreForMode();
   }
 
   startGame() {
@@ -229,14 +240,35 @@ export class UIController {
     this.currentSources = qData.imageSources;
     this.sourceIndex = 0;
 
-    this.dom.flagImg.src = this.currentSources[0];
-    this.dom.flagImg.alt = `Imagem de ${qData.question.name}`;
+    if (qData.isCapitalMode) {
+      this.dom.flagImg.removeAttribute('src');
+      this.dom.flagImg.style.display = 'none';
+      this.dom.textQuestionBox.style.display = 'block';
+      this.dom.textQuestionTitle.textContent = `Qual é a capital de...`;
+      this.dom.textQuestionTarget.textContent = qData.question.name;
+    } else {
+      this.dom.textQuestionBox.style.display = 'none';
+      this.dom.flagImg.style.display = 'block';
+      if (this.currentSources && this.currentSources.length > 0) {
+        this.dom.flagImg.src = this.currentSources[0];
+      }
+      this.dom.flagImg.alt = `Imagem de ${qData.question.name}`;
+    }
+
     this.updateHeaderUI();
 
+    const totalOpts = qData.options.length;
+    this.dom.optionsGrid.style.gridTemplateColumns = totalOpts > 4 ? '1fr 1fr' : '1fr 1fr';
+
     this.dom.options.forEach((btn, idx) => {
-      btn.textContent = qData.options[idx].name;
-      btn.disabled = false;
-      btn.className = 'option-btn';
+      if (idx < totalOpts) {
+        btn.style.display = 'flex';
+        btn.textContent = qData.options[idx].optionText || qData.options[idx].name;
+        btn.disabled = false;
+        btn.className = 'option-btn';
+      } else {
+        btn.style.display = 'none';
+      }
     });
 
     this.startTimer();
@@ -289,10 +321,12 @@ export class UIController {
 
     this.dom.options.forEach((btn, idx) => {
       btn.disabled = true;
-      if (this.game.options[idx].code === result.correctItem.code) {
-        btn.classList.add('correct');
-      } else if (idx === selectedIndex && !result.isCorrect) {
-        btn.classList.add('wrong');
+      if (this.game.options[idx]) {
+        if (this.game.options[idx].code === result.correctItem.code) {
+          btn.classList.add('correct');
+        } else if (idx === selectedIndex && !result.isCorrect) {
+          btn.classList.add('wrong');
+        }
       }
     });
 
@@ -307,9 +341,10 @@ export class UIController {
       if (result.isGameOver) {
         this.showGameOver();
       } else {
+        const correctText = result.correctItem.capital || result.correctItem.name;
         this.showFeedback(
           result.isCorrect ? '🎉 Resposta Certa!' : '❌ Ops! Quase lá!',
-          `${result.message}<br><br><b>Correto:</b> ${result.correctItem.name}`
+          `${result.message}<br><br><b>Correto:</b> ${correctText}`
         );
       }
     }, 600);
@@ -322,9 +357,10 @@ export class UIController {
     if (res.isGameOver) {
       this.showGameOver();
     } else {
+      const correctText = res.correctItem.capital || res.correctItem.name;
       this.showFeedback(
         '⏰ Tempo Esgotado!',
-        `O tempo de ${this.game.maxTime} segundos acabou!<br><br><b>O item correto era:</b> ${res.correctItem.name}`
+        `O tempo de ${this.game.maxTime} segundos acabou!<br><br><b>O item correto era:</b> ${correctText}`
       );
     }
   }

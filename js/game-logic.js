@@ -1,7 +1,8 @@
-// js/game-logic.js - Lógica QuizAll com Busca em Múltiplas Fontes de Imagem da Web (Fallback Dinâmico)
+// js/game-logic.js - Lógica QuizAll com Suporte a Capitais (6 Opções) e Recordes Individuais por Tema
 import { FLAGS_DATA, getIntelligentDistractors } from './flags-data.js';
 import { LOGOS_DATA, getLogoDistractors } from './logos-data.js';
 import { CRESTS_DATA, getCrestDistractors } from './crests-data.js';
+import { CAPITALS_DATA, getCapitalDistractors } from './datasets/capitals.js';
 
 export const MICRO_VICTORIES = [
   "Caramba! Você é um mestre supremo! 🌟",
@@ -43,7 +44,7 @@ export class GameLogic {
     this.errors = 0;
     this.maxErrors = 5;
     this.correctCount = 0;
-    this.highScore = parseInt(localStorage.getItem('quizall_highscore') || '0', 10);
+    this.loadHighScoreForMode();
     this.currentQuestion = null;
     this.options = [];
     this.timeLeft = this.maxTime;
@@ -53,6 +54,12 @@ export class GameLogic {
     this.loadStats();
   }
 
+  loadHighScoreForMode() {
+    const key = `quizall_highscore_${this.gameMode}`;
+    this.highScore = parseInt(localStorage.getItem(key) || '0', 10);
+    return this.highScore;
+  }
+
   setPlayerName(name) {
     this.playerName = name.trim() || 'Campeão';
     localStorage.setItem('quizall_player_name', this.playerName);
@@ -60,6 +67,7 @@ export class GameLogic {
 
   setGameMode(mode) {
     this.gameMode = mode;
+    this.loadHighScoreForMode();
   }
 
   setDifficulty(diff) {
@@ -88,6 +96,11 @@ export class GameLogic {
   }
 
   resetAllData() {
+    localStorage.removeItem('quizall_highscore_flags');
+    localStorage.removeItem('quizall_highscore_logos');
+    localStorage.removeItem('quizall_highscore_crests');
+    localStorage.removeItem('quizall_highscore_capitals');
+    localStorage.removeItem('quizall_highscore_mixed');
     localStorage.removeItem('quizall_highscore');
     localStorage.removeItem('quizall_leaderboard');
     localStorage.removeItem('quizall_missions_stats');
@@ -129,6 +142,7 @@ export class GameLogic {
       case 'flags': return 'Bandeiras';
       case 'logos': return 'Logomarcas';
       case 'crests': return 'Escudos';
+      case 'capitals': return 'Capitais';
       case 'mixed': return 'Misturado';
       default: return 'QuizAll';
     }
@@ -149,6 +163,7 @@ export class GameLogic {
     this.correctCount = 0;
     this.usedIds.clear();
     this.lifelines = { fiftyFifty: true, hint: true, skip: true };
+    this.loadHighScoreForMode();
     return this.nextQuestion();
   }
 
@@ -158,12 +173,13 @@ export class GameLogic {
 
     let targetType = this.gameMode;
     if (this.gameMode === 'mixed') {
-      const types = ['flags', 'logos', 'crests'];
+      const types = ['flags', 'logos', 'crests', 'capitals'];
       targetType = types[Math.floor(Math.random() * types.length)];
     }
 
     let dataset = FLAGS_DATA;
     let distractorFn = getIntelligentDistractors;
+    let optionCount = 4;
 
     if (targetType === 'logos') {
       dataset = LOGOS_DATA;
@@ -171,6 +187,10 @@ export class GameLogic {
     } else if (targetType === 'crests') {
       dataset = CRESTS_DATA;
       distractorFn = getCrestDistractors;
+    } else if (targetType === 'capitals') {
+      dataset = CAPITALS_DATA;
+      distractorFn = getCapitalDistractors;
+      optionCount = 6;
     }
 
     const available = dataset.filter(item => !this.usedIds.has(item.code));
@@ -183,23 +203,41 @@ export class GameLogic {
     this.currentQuestion = activeList[randomIndex];
     this.usedIds.add(this.currentQuestion.code);
 
-    const distractors = distractorFn(this.currentQuestion, 3);
+    const distractors = distractorFn(this.currentQuestion, optionCount - 1);
     const allChoices = [this.currentQuestion, ...distractors];
-    this.options = allChoices.sort(() => Math.random() - 0.5);
+    
+    // Se for modo capitais, mapeia o nome da opção para a capital
+    this.options = allChoices.map(item => ({
+      ...item,
+      optionText: targetType === 'capitals' ? item.capital : item.name
+    })).sort(() => Math.random() - 0.5);
 
-    // Lista de busca em múltiplas fontes na web caso uma falhe
+    // Fontes de imagem em Alta Definição (apenas para desafios visuais)
     const domain = this.currentQuestion.domain || `${this.currentQuestion.code}.com`;
+    const codeLower = (this.currentQuestion.code || '').toLowerCase();
     const imageSources = [];
-    if (this.currentQuestion.img) imageSources.push(this.currentQuestion.img);
-    imageSources.push(`https://unavatar.io/${domain}`);
-    imageSources.push(`https://www.google.com/s2/favicons?domain=${domain}&sz=256`);
-    imageSources.push(`https://icons.duckduckgo.com/ip3/${domain}.ico`);
+
+    if (targetType !== 'capitals') {
+      if (this.currentQuestion.img) {
+        imageSources.push(this.currentQuestion.img);
+      }
+      if (codeLower.length === 2 && !this.currentQuestion.img) {
+        imageSources.push(`https://flagcdn.com/w640/${codeLower}.png`);
+        imageSources.push(`https://flagcdn.com/${codeLower}.svg`);
+        imageSources.push(`https://cdn.jsdelivr.net/gh/lipis/flag-icons@main/flags/4x3/${codeLower}.svg`);
+      }
+      imageSources.push(`https://logo.clearbit.com/${domain}`);
+      imageSources.push(`https://asset.brandfetch.io/${domain}/logo`);
+      imageSources.push(`https://unavatar.io/${domain}?fallback=false`);
+      imageSources.push(`https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE&url=https://${domain}&size=512`);
+    }
 
     this.stats.total_played++;
     this.saveStats();
 
     return {
       question: this.currentQuestion,
+      isCapitalMode: targetType === 'capitals',
       imageSources,
       options: this.options,
       score: this.score,
@@ -228,7 +266,8 @@ export class GameLogic {
 
       if (this.score > this.highScore) {
         this.highScore = this.score;
-        localStorage.setItem('quizall_highscore', this.highScore.toString());
+        const key = `quizall_highscore_${this.gameMode}`;
+        localStorage.setItem(key, this.highScore.toString());
       }
     } else {
       this.streak = 0;
@@ -276,7 +315,8 @@ export class GameLogic {
     this.options.forEach((opt, idx) => {
       if (opt.code !== this.currentQuestion.code) wrongIndices.push(idx);
     });
-    return wrongIndices.sort(() => 0.5 - Math.random()).slice(0, 2);
+    const countToHide = this.options.length > 4 ? 3 : 2;
+    return wrongIndices.sort(() => 0.5 - Math.random()).slice(0, countToHide);
   }
 
   useHint() {
